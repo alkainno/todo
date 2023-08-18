@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 import Todo from "./Todo";
 import TodoForm from "./TodoForm";
 
@@ -8,7 +10,6 @@ function App() {
     { id: 2, text: "Wash dishes", completed: true },
     { id: 3, text: "Go for a walk", completed: false },
   ]);
-  const [newTodo, setNewTodo] = useState("");
 
   const handleToggle = (todoId) => {
     const updatedTodos = todos.map((todo) =>
@@ -18,17 +19,20 @@ function App() {
   };
 
   const addTodo = (text) => {
-    console.log("Adding new todo:", text);
-    const newTodoItem = { id: Date.now(), text, completed: false };
+    const newTodoItem = { id: Date.now(), text: text, completed: false };
     setTodos([newTodoItem, ...todos]);
-    setNewTodo(newTodoItem.text);
   };
 
   return (
-    <>
-      <Todo todos={todos} newTodo={newTodo} onToggle={handleToggle} />
-      <TodoForm onSubmit={addTodo} />
-    </>
+    <div className="container mt-4">
+      <h1>Todo App</h1>
+      <ul className="list-group mt-4">
+        {todos.map((todo) => (
+          <Todo key={todo.id} todo={todo} handleToggle={handleToggle} />
+        ))}
+      </ul>
+      <TodoForm addTodo={addTodo} />
+    </div>
   );
 }
 

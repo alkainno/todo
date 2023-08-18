@@ -1,27 +1,29 @@
 import React, { useState } from "react";
 
-function TodoForm({ onSubmit }) {
-  const [inputValue, setInputValue] = useState("");
+const TodoForm = ({ addTodo }) => {
+  const [newTodo, setNewTodo] = useState("");
 
   const handleInputChange = (event) => {
-    setInputValue(event.target.value);
+    setNewTodo(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
-    onSubmit(inputValue);
-    setInputValue("");
+    if (newTodo.trim() === "") return;
+
+    addTodo(newTodo);
+    setNewTodo("");
   };
 
   return (
-    <form className="container mt-4" onSubmit={handleSubmit}>
+    <form onSubmit={handleFormSubmit}>
       <div className="form-group">
         <h5>Todo</h5>
         <input
           type="text"
           className="form-control"
           placeholder="Your todo...."
-          value={inputValue}
+          value={newTodo}
           onChange={handleInputChange}
         />
       </div>
@@ -30,6 +32,6 @@ function TodoForm({ onSubmit }) {
       </button>
     </form>
   );
-}
+};
 
 export default TodoForm;
