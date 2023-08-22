@@ -53,7 +53,7 @@ const TodoForm = ({ addOrUpdateTodo, editedTodo }) => {
           placeholder="Your todo...."
           value={newTodo}
           onChange={handleInputChange}
-          style={isInputEmpty ? { color: "red" } : {}}
+          style={!isInputEmpty ? { color: "black" } : {}}
         />
       </div>
       <button type="submit" className="btn btn-outline-dark mt-2">
