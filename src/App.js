@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import Todo from "./Todo";
 import TodoForm from "./TodoForm";
+import Todo from "./Todo";
 
 function App() {
   const [todos, setTodos] = useState([
@@ -10,6 +10,7 @@ function App() {
     { id: 2, text: "Wash dishes", completed: true },
     { id: 3, text: "Go for a walk", completed: false },
   ]);
+  const [editingTodo, setEditingTodo] = useState(null);
 
   const handleToggle = (todoId) => {
     const updatedTodos = todos.map((todo) =>
@@ -18,9 +19,17 @@ function App() {
     setTodos(updatedTodos);
   };
 
-  const addTodo = (text) => {
-    const newTodoItem = { id: Date.now(), text: text, completed: false };
-    setTodos([newTodoItem, ...todos]);
+  const addOrUpdateTodo = (todoId, newText) => {
+    if (todoId) {
+      const updatedTodos = todos.map((todo) =>
+        todo.id === todoId ? { ...todo, text: newText } : todo
+      );
+      setTodos(updatedTodos);
+    } else {
+      const newTodoItem = { id: Date.now(), text: newText, completed: false };
+      setTodos([newTodoItem, ...todos]);
+    }
+    setEditingTodo(null);
   };
 
   return (
@@ -28,10 +37,20 @@ function App() {
       <h1>Todo App</h1>
       <ul className="list-group mt-4">
         {todos.map((todo) => (
-          <Todo key={todo.id} todo={todo} handleToggle={handleToggle} />
+          <Todo
+            key={todo.id}
+            todo={todo}
+            handleToggle={handleToggle}
+            setEditingTodo={setEditingTodo}
+          />
         ))}
       </ul>
-      <TodoForm addTodo={addTodo} />
+      <TodoForm
+        addOrUpdateTodo={addOrUpdateTodo}
+        editedTodo={
+          editingTodo ? todos.find((todo) => todo.id === editingTodo) : null
+        }
+      />
     </div>
   );
 }
