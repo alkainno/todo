@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import classNames from "classnames";
-import "./TodoForm.css";
 
 const TodoForm = ({ addOrUpdateTodo, editedTodo }) => {
   const [newTodo, setNewTodo] = useState(editedTodo?.text || "");
@@ -43,8 +42,16 @@ const TodoForm = ({ addOrUpdateTodo, editedTodo }) => {
     empty: isInputEmpty,
   });
 
+  const inputStyle = {
+    border: isInputEmpty
+      ? "1px solid red"
+      : isEditing
+      ? "1px solid black"
+      : "1px solid #ced4da",
+  };
+
   return (
-    <form onSubmit={handleFormSubmit}>
+    <form onSubmit={handleFormSubmit} style={{ marginTop: "20px" }}>
       <div className={formGroupClasses}>
         <h5>{isEditing ? "Edit Todo" : "New Todo"}</h5>
         <input
@@ -53,7 +60,7 @@ const TodoForm = ({ addOrUpdateTodo, editedTodo }) => {
           placeholder="Your todo...."
           value={newTodo}
           onChange={handleInputChange}
-          style={!isInputEmpty ? { color: "black" } : {}}
+          style={inputStyle}
         />
       </div>
       <button type="submit" className="btn btn-outline-dark mt-2">
